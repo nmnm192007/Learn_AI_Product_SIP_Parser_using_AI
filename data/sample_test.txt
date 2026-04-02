@@ -1,0 +1,310 @@
+[2026-03-30 22:55:35,621] Received UDP packet on local[0.0.0.0:5060] remote[192.4.36.31:15250]
+INVITE sip:5555@10.105.93.17:5060 SIP/2.0
+Via: SIP/2.0/UDP 192.4.36.31:15250;branch=z9hG4bK-1415-1-0
+From: sipp <sip:sipp@192.4.36.31:15250;user=phone>;tag=0082-00001d8c-0924
+To: sipmedia <sip:5555@192.4.36.31:5090;user=phone>
+Call-ID: 1-1415@192.4.36.31
+CSeq: 1 INVITE
+Contact: sip:sipp@192.4.36.31:15250
+P-Asserted-Identity: <sip:1998102201@ipt.telenor.com;user=phone>
+P-Asserted-Identity: sip:+4790926728@ims.mnc001.mcc242.3gppnetwork.org;user=phone
+P-Asserted-Identity: <tel:+4790926728>
+Supported: 100rel
+Allow: INVITE,UPDATE,REGISTER,MESSAGE,OPTIONS,ACK,CANCEL,BYE
+Subject: Performance Test
+Content-Type: application/sdp
+Content-Length:   230
+
+v=0
+o=SAMSUNG-IMS-UE 606602712762 0 IN IP4 10.226.73.9
+s=-
+c=IN IP4 10.226.73.9
+t=0 0
+a=sendrecv
+m=audio 59846 RTP/AVP 8 101
+a=rtpmap:8 PCMA/8000
+a=rtpmap:101 telephone-event/8000
+a=fmtp:101 0-15
+a=ptime:20
+a=sendrecv
+
+[2026-03-30 22:55:35,623] Sending UDP packet on local[0.0.0.0:33874] remote[192.4.36.31:15250]
+SIP/2.0 100 Trying
+Via: SIP/2.0/UDP 192.4.36.31:15250;branch=z9hG4bK-1415-1-0
+To: sipmedia <sip:5555@192.4.36.31:5090;user=phone>
+From: sipp <sip:sipp@192.4.36.31:15250;user=phone>;tag=0082-00001d8c-0924
+Call-ID: 1-1415@192.4.36.31
+CSeq: 1 INVITE
+Content-Length: 0
+
+
+[2026-03-30 22:55:35,820] Sending UDP packet on local[0.0.0.0:33875] remote[192.4.36.31:35055]
+INVITE sip:dialog@192.4.36.31:35055;voicexml=http://testsv15:8180/msi/PlayApplication%3fsessionid%3dba2c21e10000019d420856090a695d11 SIP/2.0
+Via: SIP/2.0/UDP 0.0.0.0:5060;branch=z9hG4bKiS+CBd+C9a0Y4Md1xs6CFA~~14
+Max-Forwards: 5
+To: <sip:dialog@192.4.36.31:35055>
+From: <sip:sas-msi@testsv15>;tag=2dtiptxwgkup
+Call-ID: 2dtiptxwgkup@testsv15
+CSeq: 1 INVITE
+Content-Length: 230
+Content-Type: application/sdp
+Date: Tue, 31 Mar 2026 03:55:35 GMT
+Contact: sip:sas@testsv15
+
+v=0
+o=SAMSUNG-IMS-UE 606602712762 0 IN IP4 10.226.73.9
+s=-
+c=IN IP4 10.226.73.9
+t=0 0
+a=sendrecv
+m=audio 59846 RTP/AVP 8 101
+a=rtpmap:8 PCMA/8000
+a=rtpmap:101 telephone-event/8000
+a=fmtp:101 0-15
+a=ptime:20
+a=sendrecv
+
+[2026-03-30 22:55:35,821] Received UDP packet on local[0.0.0.0:5060] remote[192.4.36.31:62514]
+SIP/2.0 100 Trying
+Via: SIP/2.0/UDP 0.0.0.0:5060;branch=z9hG4bKiS+CBd+C9a0Y4Md1xs6CFA~~14
+From: <sip:sas-msi@testsv15>;tag=2dtiptxwgkup
+To: <sip:dialog@192.4.36.31:35055>
+CSeq: 1 INVITE
+Call-ID: 2dtiptxwgkup@testsv15
+Content-Length: 0
+
+
+[2026-03-30 22:55:37,821] Received UDP packet on local[0.0.0.0:5060] remote[192.4.36.31:62514]
+SIP/2.0 180 Ringing
+Via: SIP/2.0/UDP 0.0.0.0:5060;branch=z9hG4bKiS+CBd+C9a0Y4Md1xs6CFA~~14
+From: <sip:sas-msi@testsv15>;tag=2dtiptxwgkup
+To: <sip:dialog@192.4.36.31:35055>;tag=1176SIPpTag0160
+Call-ID: 2dtiptxwgkup@testsv15
+CSeq: 1 INVITE
+Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, NOTIFY, REFER, PRACK, INFO, UPDATE, MESSAGE
+Supported: replaces, 100rel
+P-Charging-Vector: icid-value=56696c6b05eef9a90dd1c3059f0c8a0;term-ioi=ngv.nsc.no;orig-ioi=ngv.nsc.no
+P-Charging-Function-Addresses: ccf="aaa://prim.ngv.nsc.no:3870;transport=tcp";ccf="aaa://sec.ngv.nsc.no:3868;transport=tcp"
+Contact: <sip:192.4.36.31:35055;transport=UDP>
+
+
+[2026-03-30 22:55:37,821] Received UDP packet on local[0.0.0.0:5060] remote[192.4.36.31:62514]
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP 0.0.0.0:5060;branch=z9hG4bKiS+CBd+C9a0Y4Md1xs6CFA~~14
+From: <sip:sas-msi@testsv15>;tag=2dtiptxwgkup
+To: <sip:dialog@192.4.36.31:35055>;tag=ds-1d4a-750cda00
+Call-ID: 2dtiptxwgkup@testsv15
+CSeq: 1 INVITE
+Contact: <sip:192.4.36.31:35055;transport=UDP>
+Content-Type: application/sdp
+Content-Length:   176
+
+v=0
+o=aculab-010A2401 28243 28243 IN IP4 10.211.68.73
+s=-
+c=IN IP4 10.211.68.94
+t=0 0
+m=audio 3616 RTP/AVP 8 101
+a=rtpmap:8 PCMA/8000
+a=rtpmap:101 telephone-event/8000
+
+[2026-03-30 22:55:37,837] Sending UDP packet on local[0.0.0.0:33874] remote[192.4.36.31:15250]
+SIP/2.0 200 Ok
+Via: SIP/2.0/UDP 192.4.36.31:15250;branch=z9hG4bK-1415-1-0
+To: sipmedia <sip:5555@192.4.36.31:5090;user=phone>;tag=g0xvzma9vs8cds-1d4a-750cda00
+From: sipp <sip:sipp@192.4.36.31:15250;user=phone>;tag=0082-00001d8c-0924
+Call-ID: 1-1415@192.4.36.31
+CSeq: 1 INVITE
+Content-Length: 176
+Content-Type: application/sdp
+Date: Tue, 31 Mar 2026 03:55:37 GMT
+Contact: sip:sas@testsv15
+
+v=0
+o=aculab-010A2401 28243 28243 IN IP4 10.211.68.73
+s=-
+c=IN IP4 10.211.68.94
+t=0 0
+m=audio 3616 RTP/AVP 8 101
+a=rtpmap:8 PCMA/8000
+a=rtpmap:101 telephone-event/8000
+
+[2026-03-30 22:55:37,837] Received UDP packet on local[0.0.0.0:5060] remote[192.4.36.31:15250]
+ACK sip:5555@10.105.93.17:5060 SIP/2.0
+Via: SIP/2.0/UDP 192.4.36.31:15250;branch=z9hG4bK-1415-1-3
+From: sipp <sip:sipp@192.4.36.31:15250;user=phone>;tag=0082-00001d8c-0924
+To: sipmedia <sip:5555@192.4.36.31:5090;user=phone>;tag=g0xvzma9vs8cds-1d4a-750cda00
+Call-ID: 1-1415@192.4.36.31
+CSeq: 1 ACK
+Contact: sip:sipp@192.4.36.31:15250
+Max-Forwards: 70
+Subject: Performance Test
+Content-Type: application/sdp
+Content-Length:     0
+
+
+[2026-03-30 22:55:37,841] Sending UDP packet on local[0.0.0.0:33875] remote[192.4.36.31:35055]
+ACK sip:dialog@192.4.36.31:35055;voicexml=http://testsv15:8180/msi/PlayApplication%3fsessionid%3dba2c21e10000019d420856090a695d11 SIP/2.0
+Via: SIP/2.0/UDP 0.0.0.0:5060;branch=z9hG4bKiS+CBd+C9a0Y4Md1xs6CFA~~15
+Max-Forwards: 70
+To: <sip:dialog@192.4.36.31:35055>;tag=ds-1d4a-750cda00
+From: <sip:sas-msi@testsv15>;tag=2dtiptxwgkup
+Call-ID: 2dtiptxwgkup@testsv15
+CSeq: 1 ACK
+Content-Length: 0
+Contact: sip:sas@testsv15
+Date: Tue, 31 Mar 2026 03:55:37 GMT
+
+
+[2026-03-30 22:55:37,899] Received UDP packet on local[0.0.0.0:5060] remote[192.4.36.31:15250]
+UPDATE sip:5555@10.105.93.17:5060 SIP/2.0
+Via: SIP/2.0/UDP 192.4.36.31:15250;branch=z9hG4bK-1415-1-5
+From: sipp <sip:sipp@192.4.36.31:15250;user=phone>;tag=0082-00001d8c-0924
+To: sipmedia <sip:5555@192.4.36.31:5090;user=phone>;tag=g0xvzma9vs8cds-1d4a-750cda00
+Call-ID: 1-1415@192.4.36.31
+CSeq: 2 UPDATE
+Allow: INVITE,UPDATE,REGISTER,MESSAGE,OPTIONS,ACK,CANCEL,BYE
+Max-Forwards: 70
+Content-Type: application/sdp
+Content-Length:     0
+
+
+[2026-03-30 22:55:37,903] Sending UDP packet on local[0.0.0.0:33874] remote[192.4.36.31:15250]
+SIP/2.0 500 Internal Server Error
+Via: SIP/2.0/UDP 192.4.36.31:15250;branch=z9hG4bK-1415-1-5
+To: sipmedia <sip:5555@192.4.36.31:5090;user=phone>;tag=g0xvzma9vs8cds-1d4a-750cda00
+From: sipp <sip:sipp@192.4.36.31:15250;user=phone>;tag=0082-00001d8c-0924
+Call-ID: 1-1415@192.4.36.31
+CSeq: 2 UPDATE
+Content-Length: 0
+Date: Tue, 31 Mar 2026 03:55:37 GMT
+
+
+[2026-03-30 22:55:37,908] Received UDP packet on local[0.0.0.0:5060] remote[192.4.36.31:15250]
+BYE sip:5555@192.4.36.31:5090;user=phone SIP/2.0
+Via: SIP/2.0/UDP 192.4.36.31:15250;branch=z9hG4bK-1415-1--1
+From: sipp <sip:sipp@192.4.36.31:15250;user=phone>;tag=0082-00001d8c-0924
+To: sipmedia <sip:5555@192.4.36.31:5090;user=phone>;tag=g0xvzma9vs8cds-1d4a-750cda00
+Call-ID: 1-1415@192.4.36.31
+CSeq: 3 BYE
+Max-Forwards: 70
+Contact: <sip:sipp@192.4.36.31:15250;transport=UDP>
+Content-Length: 0
+
+
+[2026-03-30 22:55:37,909] Sending UDP packet on local[0.0.0.0:33874] remote[192.4.36.31:15250]
+SIP/2.0 481 Call Leg/Transaction Does Not Exist
+Via: SIP/2.0/UDP 192.4.36.31:15250;branch=z9hG4bK-1415-1--1
+To: sipmedia <sip:5555@192.4.36.31:5090;user=phone>;tag=g0xvzma9vs8cds-1d4a-750cda00
+From: sipp <sip:sipp@192.4.36.31:15250;user=phone>;tag=0082-00001d8c-0924
+Call-ID: 1-1415@192.4.36.31
+CSeq: 3 BYE
+Content-Length: 0
+
+
+[2026-03-30 22:55:38,351] Received UDP packet on local[0.0.0.0:5060] remote[192.4.36.31:62514]
+BYE sip:5555@10.105.93.17:5060 SIP/2.0
+Via: SIP/2.0/UDP 192.4.36.31:35055;branch=z9hG4bK-1176-60-8
+From:  <sip:dialog@192.4.36.31:35055>;tag=ds-1d4a-750cda00
+To:  <sip:sas-msi@testsv15>;tag=2dtiptxwgkup
+Call-ID: 2dtiptxwgkup@testsv15
+CSeq: 2 BYE
+Contact: sip:sipp@192.4.36.31:35055
+Max-Forwards: 70
+Subject: Performance Test
+Content-Length: 0
+
+
+[2026-03-30 22:55:38,353] Sending UDP packet on local[0.0.0.0:33875] remote[192.4.36.31:35055]
+SIP/2.0 481 Call Leg/Transaction Does Not Exist
+Via: SIP/2.0/UDP 192.4.36.31:35055;branch=z9hG4bK-1176-60-8
+To: <sip:sas-msi@testsv15>;tag=2dtiptxwgkup
+From: <sip:dialog@192.4.36.31:35055>;tag=ds-1d4a-750cda00
+Call-ID: 2dtiptxwgkup@testsv15
+CSeq: 2 BYE
+Content-Length: 0
+
+
+[2026-03-30 22:57:03,903] Sending UDP packet on local[0.0.0.0:33875] remote[192.4.36.31:35055]
+OPTIONS sip:annc@192.4.36.31:35055 SIP/2.0
+Via: SIP/2.0/UDP 0.0.0.0:5060;branch=z9hG4bKiS+CBd+C9a0Y4Md1xs6CFA~~16
+Max-Forwards: 70
+To: <sip:annc@192.4.36.31:35055>
+From: <sip:sas-msi@testsv15>;tag=1507jrp93xkl0
+Call-ID: 1507jrp93xkl0@testsv15
+CSeq: 1 OPTIONS
+Content-Length: 0
+Date: Tue, 31 Mar 2026 03:57:03 GMT
+
+
+[2026-03-30 22:57:03,904] Received UDP packet on local[0.0.0.0:5060] remote[192.4.36.31:62514]
+SIP/2.0 100 Trying
+Via: SIP/2.0/UDP 0.0.0.0:5060;branch=z9hG4bKiS+CBd+C9a0Y4Md1xs6CFA~~16
+From: <sip:sas-msi@testsv15>;tag=1507jrp93xkl0
+To: <sip:annc@192.4.36.31:35055>
+CSeq: 1 OPTIONS
+Call-ID: 1507jrp93xkl0@testsv15
+Content-Length: 0
+
+
+[2026-03-30 22:57:03,905] Sending UDP packet on local[0.0.0.0:33880] remote[192.4.36.31:35056]
+OPTIONS sip:annc@192.4.36.31:35056 SIP/2.0
+Via: SIP/2.0/UDP 0.0.0.0:5060;branch=z9hG4bKiS+CBd+C9a0Y4Md1xs6CFA~~17
+Max-Forwards: 70
+To: <sip:annc@192.4.36.31:35056>
+From: <sip:sas-msi@testsv15>;tag=133wk5zi500yl
+Call-ID: 133wk5zi500yl@testsv15
+CSeq: 1 OPTIONS
+Content-Length: 0
+Date: Tue, 31 Mar 2026 03:57:03 GMT
+
+
+[2026-03-30 22:57:03,905] Received UDP packet on local[0.0.0.0:5060] remote[192.4.36.31:62514]
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP 0.0.0.0:5060;branch=z9hG4bKiS+CBd+C9a0Y4Md1xs6CFA~~16
+From: <sip:sas-msi@testsv15>;tag=1507jrp93xkl0
+To: <sip:annc@192.4.36.31:35055>;tag=1176SIPpTag0161
+Call-ID: 1507jrp93xkl0@testsv15
+CSeq: 1 OPTIONS
+Contact: <sip:192.4.36.31:35055;transport=UDP>
+Content-Type: application/sdp
+Content-Length:   173
+
+v=0
+o=aculab-01067401 2047 2047 IN IP4 10.211.68.73
+s=-
+c=IN IP4 10.211.68.94
+t=0 0
+m=audio 3160 RTP/AVP 8 95
+a=rtpmap:8 PCMA/8000
+a=rtpmap:101 telephone-event/8000
+
+[2026-03-30 22:57:03,906] Received UDP packet on local[0.0.0.0:5060] remote[192.4.36.31:62515]
+SIP/2.0 100 Trying
+Via: SIP/2.0/UDP 0.0.0.0:5060;branch=z9hG4bKiS+CBd+C9a0Y4Md1xs6CFA~~17
+From: <sip:sas-msi@testsv15>;tag=133wk5zi500yl
+To: <sip:annc@192.4.36.31:35056>
+CSeq: 1 OPTIONS
+Call-ID: 133wk5zi500yl@testsv15
+Content-Length: 0
+
+
+[2026-03-30 22:57:03,906] Received UDP packet on local[0.0.0.0:5060] remote[192.4.36.31:62515]
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP 0.0.0.0:5060;branch=z9hG4bKiS+CBd+C9a0Y4Md1xs6CFA~~17
+From: <sip:sas-msi@testsv15>;tag=133wk5zi500yl
+To: <sip:annc@192.4.36.31:35056>;tag=1177SIPpTag0147
+Call-ID: 133wk5zi500yl@testsv15
+CSeq: 1 OPTIONS
+Contact: <sip:192.4.36.31:35056;transport=UDP>
+Content-Type: application/sdp
+Content-Length:   173
+
+v=0
+o=aculab-01067401 2047 2047 IN IP4 10.211.68.73
+s=-
+c=IN IP4 10.211.68.94
+t=0 0
+m=audio 3160 RTP/AVP 8 95
+a=rtpmap:8 PCMA/8000
+a=rtpmap:101 telephone-event/8000
