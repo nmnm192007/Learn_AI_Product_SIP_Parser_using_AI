@@ -16,74 +16,87 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent  # project root
 LOG_FILE = os.getenv("LOG_FILE")
-log_file = BASE_DIR/LOG_FILE
+log_file = BASE_DIR / LOG_FILE
 
 
 def read_logs(log_file: Path) -> Generator[str, Any, None]:
     """
-    Parse the log file
+    read the sip call flow log file and yield the generator
     :param log_file:
     :return:
     """
 
-    try:
-        with open(log_file, 'r') as f_obj:
-            for gen in f_obj:
-                yield gen
-    except FileNotFoundError:
-        raise FileNotFoundError("Log file not found, check LOG_FILE in .env")
-    except IOError:
-        raise IOError("Log file not found, check LOG_FILE in .env")
-    except Exception as e:
-        raise e
+    if not log_file.exists():
+        raise FileNotFoundError(f'{log_file} does not exist')
+
+    with open(log_file, "r") as f:
+        for gen in f:
+            yield gen
+
+
+def group_messages(log_gen: Generator[Any, Any, Any]) -> Generator[
+    Any, Any, Any]:
+    message = []
+
+    for log_line in log_gen:
+        if log_line.startswith("[") and message:
+            yield "\n".join(message)
+            message = []
+        message.append(log_line.strip())
+
+    if message:
+        yield "\n".join(message)
 
 
 def parse_log_segment(log_generator: Generator[str, Any, None]) -> Dict[str,
 Any]:
     """
-    get the line from log file and parse the message segment
-    :param line:
+    parse the sip call flow log file and parse the message segment
+    :param log_generator:
     :return:
     """
-    ret_dict: Dict[str, Any] = {}
-    time_stamp = msg_dir = sip_msg = from_hdr = to_hdr = call_id = \
-        content_length = ""
+    for msg in group_messages(log_generator):
 
-    for line in log_generator:
-        print("line: ", line)
-        if not line:
-            continue
-        line = line.strip()
-        if line.startswith((' ', '#')):
-            return None
-        try:
-            if line.startswith('['):
-                time_stamp = line.split(sep=" ")[0] if time_stamp else ""
-                msg_dir = line.split(sep=" ")[1]
-            if line.startswith(('INVITE', 'UPDATE',)):
-                sip_msg = line.split(sep=" ")[0]
-            if line.startswith(('SIP/2.0',)):
-                sip_msg = line.split(sep=" ")[1] + line.split(sep=" ")[2]
-            if line.startswith(('From',)):
-                from_hdr = line.split(sep=":")[1]
-            if line.startswith(('To',)):
-                to_hdr = line.split(sep=":")[1]
-            if line.startswith(('Call-ID',)):
-                call_id = line.split(sep=":")[1]
-            if line.startswith(('Content-Length',)):
-                content_length = line.split(sep=":")[1]
+        ret_dict: Dict[str, Any] = \
+            {
+                "timestamp":"",
+                "direction":"",
+                "sip_msg":"",
+                "from":"",
+                "to":"",
+                "call_id":"",
+                "content_length":""
+            }
 
-            ret_dict.update(
-                {time_stamp:(sip_msg, from_hdr, to_hdr, call_id,
-                             content_length)})
+        lines = msg.split("\n")
 
+        for line in lines:
+            if line.startswith("["):
+                parts = line.split()
+                ret_dict["timestamp"] = parts[0] + " " + parts[1]
+                ret_dict["direction"] = parts[2]
 
-        except ValueError:
-            raise Exception("line is invalid")
-        except Exception as e:
-            raise e
-    print("Ret Dict: ", ret_dict)
-    return ret_dict
+            elif line.startswith(
+                    ('INVITE', 'UPDATE', 'ACK', 'BYE', 'OPTIONS')):
+                ret_dict["sip_msg"] = line.split()[0]
+
+            elif line.startswith("SIP/2.0"):
+                ret_dict["sip_msg"] = " ".join(line.split()[1:3])
+
+            elif line.startswith("From:"):
+                ret_dict["from"] = line.split(':', 1)[1].strip()
+
+            elif line.startswith('To:'):
+                ret_dict["to"] = line.split(":", 1)[1].strip()
+
+            elif line.startswith('Call-ID:'):
+                ret_dict["call_id"] = line.split(":", 1)[1].strip()
+
+            elif line.startswith('Content-Length:'):
+                ret_dict["content_length"] = line.split(":", 1)[1].strip()
+
+        yield ret_dict
+
 
 def main():
     logs = read_logs(log_file)
@@ -92,7 +105,10 @@ def main():
     parse_log_segment(logs)
 
     print(list(islice(logs_copy, 10)))
+    print("\n PARSED OUTPUT :: \n")
 
+    for parsed in parse_log_segment(logs):
+        print(parsed)
 
 
 if __name__ == '__main__':
