@@ -7,7 +7,7 @@
 """
 
 import os
-from typing import Type, Any, Generator
+from typing import Dict, Type, Any, Generator
 from dotenv import load_dotenv
 from pathlib import Path
 from itertools import tee, islice
@@ -48,7 +48,7 @@ def group_messages(log_gen: Generator[Any, Any, Any]) -> Generator[
         yield "\n".join(message)
 
 
-def parse_log_segment(log_generator: Generator[str, Any, None]) -> Dict[str,
+def parse_log_segment(log_generator: Generator[str, None, None]) -> Dict[str,
 Any]:
     """
     parse the sip call flow log file and parse the message segment
@@ -69,6 +69,7 @@ Any]:
             }
 
         lines = msg.split("\n")
+        SIP_METHODS = ('INVITE', 'UPDATE', 'ACK', 'BYE', 'OPTIONS')
 
         for line in lines:
             if line.startswith("["):
@@ -76,8 +77,7 @@ Any]:
                 ret_dict["timestamp"] = parts[0] + " " + parts[1]
                 ret_dict["direction"] = parts[2]
 
-            elif line.startswith(
-                    ('INVITE', 'UPDATE', 'ACK', 'BYE', 'OPTIONS')):
+            elif any(line.startswith(method) for method in SIP_METHODS):
                 ret_dict["sip_msg"] = line.split()[0]
 
             elif line.startswith("SIP/2.0"):
@@ -96,20 +96,3 @@ Any]:
                 ret_dict["content_length"] = line.split(":", 1)[1].strip()
 
         yield ret_dict
-
-
-def main():
-    logs = read_logs(log_file)
-    print(type(logs))  # should be generator
-    logs, logs_copy = tee(logs)
-    parse_log_segment(logs)
-
-    print(list(islice(logs_copy, 10)))
-    print("\n PARSED OUTPUT :: \n")
-
-    for parsed in parse_log_segment(logs):
-        print(parsed)
-
-
-if __name__ == '__main__':
-    main()
