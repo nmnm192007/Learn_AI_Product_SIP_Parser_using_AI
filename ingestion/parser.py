@@ -10,7 +10,6 @@ import os
 from typing import Dict, Type, Any, Generator
 from dotenv import load_dotenv
 from pathlib import Path
-from itertools import tee, islice
 
 load_dotenv()
 
@@ -70,20 +69,27 @@ Any]:
 
         lines = msg.split("\n")
         SIP_METHODS = ('INVITE', 'UPDATE', 'ACK', 'BYE', 'OPTIONS')
-
+        SIP_RESPONSES = ('100 Trying', '180 Ringing', '200 OK', '481 Call Leg/Transaction Does Not Exist', '500 Internal Server Error')
+        
         for line in lines:
             if line.startswith("["):
                 parts = line.split()
-                ret_dict["timestamp"] = parts[0] + " " + parts[1]
+                print(parts)
+                parts_0 = parts[0].strip('[')
+                parts_1 = parts[1].strip(']')
+                ret_dict["timestamp"] = str(parts_0) + " " + str(parts_1)
                 ret_dict["direction"] = parts[2]
 
-            elif any(line.startswith(method) for method in SIP_METHODS):
-                ret_dict["sip_msg"] = line.split()[0]
+            elif any(line.upper().startswith(method) for method in SIP_METHODS):
+                ret_dict["sip_msg"] = line.split()[0].upper()
 
-            elif line.startswith("SIP/2.0"):
-                ret_dict["sip_msg"] = " ".join(line.split()[1:3])
+            elif line.startswith("SIP/2.0") and (line.split()[1:3] in SIP_RESPONSES):
+                    ret_dict["sip_msg"] = " ".join(line.split()[1:3]).upper()
+            elif line.startswith("SIP/2.0") and line.split()[1:3] not in SIP_RESPONSES:
+                    ret_dict["sip_msg"] = " ".join(line.split()[1:4]).upper()
 
-            elif line.startswith("From:"):
+
+            elif line.lower().startswith("from:"):
                 ret_dict["from"] = line.split(':', 1)[1].strip()
 
             elif line.startswith('To:'):
