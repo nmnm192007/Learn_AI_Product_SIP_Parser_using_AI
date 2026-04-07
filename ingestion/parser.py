@@ -19,86 +19,95 @@ log_file = BASE_DIR / LOG_FILE
 
 
 def read_logs(log_file: Path) -> Generator[str, Any, None]:
-    """
-    read the sip call flow log file and yield the generator
-    :param log_file:
-    :return:
-    """
+	"""
+	read the sip call flow log file and yield the generator
+	:param log_file:
+	:return:
+	"""
 
-    if not log_file.exists():
-        raise FileNotFoundError(f'{log_file} does not exist')
+	if not log_file.exists():
+		raise FileNotFoundError(f'{log_file} does not exist')
 
-    with open(log_file, "r") as f:
-        for gen in f:
-            yield gen
+	with open(log_file, "r") as f:
+		for gen in f:
+			yield gen
 
 
 def group_messages(log_gen: Generator[Any, Any, Any]) -> Generator[
-    Any, Any, Any]:
-    message = []
+	Any, Any, Any]:
+	message = []
 
-    for log_line in log_gen:
-        if log_line.startswith("[") and message:
-            yield "\n".join(message)
-            message = []
-        message.append(log_line.strip())
+	for log_line in log_gen:
+		if log_line.startswith("[") and message:
+			yield "\n".join(message)
+			message = []
+		message.append(log_line.strip())
 
-    if message:
-        yield "\n".join(message)
+	if message:
+		yield "\n".join(message)
 
 
 def parse_log_segment(log_generator: Generator[str, None, None]) -> Dict[str,
 Any]:
-    """
-    parse the sip call flow log file and parse the message segment
-    :param log_generator:
-    :return:
-    """
-    for msg in group_messages(log_generator):
+	"""
+	parse the sip call flow log file and parse the message segment
+	:param log_generator:
+	:return:
+	"""
+	for msg in group_messages(log_generator):
 
-        ret_dict: Dict[str, Any] = \
-            {
-                "timestamp":"",
-                "direction":"",
-                "sip_msg":"",
-                "from":"",
-                "to":"",
-                "call_id":"",
-                "content_length":""
-            }
+		ret_dict: Dict[str, Any] = \
+			{
+				"timestamp":"",
+				"direction":"",
+				"sip_msg":"",
+				"from":"",
+				"to":"",
+				"call_id":"",
+				"content_length":""
+			}
 
-        lines = msg.split("\n")
-        SIP_METHODS = ('INVITE', 'UPDATE', 'ACK', 'BYE', 'OPTIONS')
-        SIP_RESPONSES = ('100 Trying', '180 Ringing', '200 OK', '481 Call Leg/Transaction Does Not Exist', '500 Internal Server Error')
-        
-        for line in lines:
-            if line.startswith("["):
-                parts = line.split()
-                print(parts)
-                parts_0 = parts[0].strip('[')
-                parts_1 = parts[1].strip(']')
-                ret_dict["timestamp"] = str(parts_0) + " " + str(parts_1)
-                ret_dict["direction"] = parts[2]
+		lines = msg.split("\n")
+		SIP_METHODS = ('INVITE', 'UPDATE', 'ACK', 'BYE', 'OPTIONS')
+		SIP_RESPONSES = ('100 Trying', '180 Ringing', '200 OK',
+		                 '481 Call Leg/Transaction Does Not Exist',
+		                 '500 Internal Server Error')
 
-            elif any(line.upper().startswith(method) for method in SIP_METHODS):
-                ret_dict["sip_msg"] = line.split()[0].upper()
+		for line in lines:
+			if line.startswith("["):
+				parts = line.split()
+				print(parts)
+				parts_0 = parts[0].strip('[')
+				parts_1 = parts[1].strip(']')
+				ret_dict["timestamp"] = str(parts_0) + " " + str(parts_1)
+				ret_dict["direction"] = parts[2]
 
-            elif line.startswith("SIP/2.0") and (line.split()[1:3] in SIP_RESPONSES):
-                    ret_dict["sip_msg"] = " ".join(line.split()[1:3]).upper()
-            elif line.startswith("SIP/2.0") and line.split()[1:3] not in SIP_RESPONSES:
-                    ret_dict["sip_msg"] = " ".join(line.split()[1:4]).upper()
+			elif any(
+					line.upper().startswith(method) for method in
+					SIP_METHODS):
+				ret_dict["sip_msg"] = line.split()[0].upper()
+
+			elif line.startswith("SIP/2.0") and (line.split()[1:3] in SIP_RESPONSES):
+				ret_dict["sip_msg"] = " ".join(line.split()[1:3]).upper()
+			elif line.startswith("SIP/2.0") and line.split()[
+				1:4] not in SIP_RESPONSES:
+				len_line = len(line.split()) if (len(line.split()) > 1) else 0
+				ret_dict["sip_msg"] = " ".join(line.split()[
+					                               1:len_line]).upper() if \
+					(len_line > 0) else ""
 
 
-            elif line.lower().startswith("from:"):
-                ret_dict["from"] = line.split(':', 1)[1].strip()
 
-            elif line.startswith('To:'):
-                ret_dict["to"] = line.split(":", 1)[1].strip()
+			elif (line.lower().startswith("from:")):
+				ret_dict["from"] = line.split(':', 1)[1].strip()
 
-            elif line.startswith('Call-ID:'):
-                ret_dict["call_id"] = line.split(":", 1)[1].strip()
+			elif line.startswith('To:'):
+				ret_dict["to"] = line.split(":", 1)[1].strip()
 
-            elif line.startswith('Content-Length:'):
-                ret_dict["content_length"] = line.split(":", 1)[1].strip()
+			elif line.startswith('Call-ID:'):
+				ret_dict["call_id"] = line.split(":", 1)[1].strip()
 
-        yield ret_dict
+			elif line.startswith('Content-Length:'):
+				ret_dict["content_length"] = line.split(":", 1)[1].strip()
+
+		yield ret_dict

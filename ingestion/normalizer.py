@@ -44,7 +44,7 @@ class Normalizer:
 		elif headers in SIP_RESPONSES:
 			return headers.strip()
 		else:
-			return "TRUNCATED::" + headers
+			return "OTHER::" + headers
 		return headers.strip()
 
 	def _normalize_call_id(self, call_id):
