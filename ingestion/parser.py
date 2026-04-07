@@ -69,9 +69,7 @@ Any]:
 
 		lines = msg.split("\n")
 		SIP_METHODS = ('INVITE', 'UPDATE', 'ACK', 'BYE', 'OPTIONS')
-		SIP_RESPONSES = ('100 Trying', '180 Ringing', '200 OK',
-		                 '481 Call Leg/Transaction Does Not Exist',
-		                 '500 Internal Server Error')
+		SIP_RESPONSES = ('100 Trying', '180 Ringing', '200 OK')
 
 		for line in lines:
 			if line.startswith("["):
