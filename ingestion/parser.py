@@ -74,7 +74,6 @@ Any]:
 		for line in lines:
 			if line.startswith("["):
 				parts = line.split()
-				print(parts)
 				parts_0 = parts[0].strip('[')
 				parts_1 = parts[1].strip(']')
 				ret_dict["timestamp"] = str(parts_0) + " " + str(parts_1)
