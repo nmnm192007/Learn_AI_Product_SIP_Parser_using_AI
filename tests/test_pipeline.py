@@ -22,7 +22,7 @@ parsed_gen = parse_log_segment(log_gen)
 normalizer = Normalizer()
 
 # Step 5: Process ONE message
-# first_msg = next(parsed_gen)
+first_msg = next(parsed_gen)
 
 for msg in parsed_gen:
 	print("\n--- PARSED MESSAGE ---")
@@ -33,3 +33,9 @@ for msg in parsed_gen:
 	print("\n  --- NORMALIZED MESSAGE --- ")
 	print(cleaned_msg)
 	print("\n-----------------------------------")
+
+
+
+if __name__ == "__main__":
+	test_direction()
+	test_bad_format_msg()
