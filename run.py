@@ -1,6 +1,6 @@
-
-from pathlib import Path
 import os
+from pathlib import Path
+
 from dotenv import load_dotenv
 
 from ingestion.pipeline import run_pipeline
@@ -13,12 +13,13 @@ log_file = BASE_DIR / LOG_FILE
 
 
 def main():
-   sessions = run_pipeline(log_file)
-   print(sessions)
-   for call_id, msgs in sessions.items():
-       print(f"\nCALL_ID:: {call_id}:")
-       for msg in msgs:
-           print(msg["sip_msg"], msg["direction"])
+    msg_v = []
+    sessions = run_pipeline(log_file)
+    print("run:sessions:", sessions)
+    for call_id, msgs in sessions.items():
+        print(f"\nCALL_ID:: {call_id}:")
+        for msg_k, msg_v in msgs.items():
+            print(f"{msg_k}: {msg_v}")
 
 
 if __name__ == "__main__":
