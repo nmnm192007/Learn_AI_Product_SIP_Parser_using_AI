@@ -27,15 +27,15 @@ class Sessionizer:
         # Create session if not existing already
         if call_id not in self.sessions:
             self.sessions[call_id] = {
-                "messages":[],
-                "call_state":"INIT",
-                "type_of_call":"UNKNOWN",
-                "has_error":False,
-                "terminated":False,
-                "start_time":msg.get("timestamp"),
-                "last_seen":msg.get("timestamp"),
-                "final_status":"",
-                "duration":0,
+                "messages": [],
+                "call_state": "INIT",
+                "type_of_call": "UNKNOWN",
+                "has_error": False,
+                "terminated": False,
+                "start_time": msg.get("timestamp"),
+                "last_seen": msg.get("timestamp"),
+                "final_status": "",
+                "duration": 0,
             }
         session = self.sessions[call_id]
 
@@ -48,8 +48,7 @@ class Sessionizer:
         #  Update Call state
         sip_msg = msg["sip_msg"]
         #  Call progression
-        session["call_state"] = self._update_call_state(session["call_state"],
-                                                        sip_msg)
+        session["call_state"] = self._update_call_state(session["call_state"], sip_msg)
         # Error Tracking
         if sip_msg.startswith("OTHER::4") or sip_msg.startswith("OTHER::5"):
             session["has_error"] = True
@@ -103,8 +102,7 @@ class Sessionizer:
             return "PERMANENTLY ERROR : Probably SYSTEM ERROR"
         return current_state
 
-    def _derive_final_status(self,
-                             session: defaultdict[str, dict[str, str]]) -> str:
+    def _derive_final_status(self, session: defaultdict[str, dict[str, str]]) -> str:
         """
         From the parameters tyoe of call, has_error and terminated, derive
         the final status of the SIP CALL and print it
@@ -122,17 +120,15 @@ class Sessionizer:
         return "CALL NOT COMPLETE"
 
     def _compute_actual_duration(
-            self, session: defaultdict[str, dict[str, str]]
+        self, session: defaultdict[str, dict[str, str]]
     ) -> datetime:
         """
         calculate the actual duration of the session
         :param session: defaultdict[str, dict[str, str]]
         :return: duration in seconds
         """
-        start_sec = datetime.strptime(session["start_time"],
-                                      "%Y-%m-%dT%H:%M:%S.%f")
-        end_sec = datetime.strptime(session["last_seen"],
-                                    "%Y-%m-%dT%H:%M:%S.%f")
+        start_sec = datetime.strptime(session["start_time"], "%Y-%m-%dT%H:%M:%S.%f")
+        end_sec = datetime.strptime(session["last_seen"], "%Y-%m-%dT%H:%M:%S.%f")
         duration_sec = (end_sec - start_sec).total_seconds()
         return duration_sec
 
