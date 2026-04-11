@@ -10,24 +10,24 @@ Defines the Finite State Machine FSM as a dict[str,dict[str:str]]
 """
 
 TRANSITIONS = {
-    "IDLE":{"INVITE":"INIT"},
-    "INIT":{
-        "100 TRYING":"EARLY",
-        "180 RINGING":"EARLY",
-        "200 OK":"ESTABLISHED",
+    "IDLE": {"INVITE": "INIT"},
+    "INIT": {
+        "100 TRYING": "EARLY",
+        "180 RINGING": "EARLY",
+        "200 OK": "ESTABLISHED",
     },
-    "EARLY":{
-        "180 RINGING":"EARLY",
-        "200 OK":"ESTABLISHED",
+    "EARLY": {
+        "180 RINGING": "EARLY",
+        "200 OK": "ESTABLISHED",
     },
-    "ESTABLISHED":{
-        "ACK":"CONFIRMED",
+    "ESTABLISHED": {
+        "ACK": "CONFIRMED",
     },
-    "CONFIRMED":{
-        "UPDATE":"CONFIRMED",
-        "BYE":"TERMINATED",
+    "CONFIRMED": {
+        "UPDATE": "CONFIRMED",
+        "BYE": "TERMINATED",
     },
-    "TERMINATED":{},
+    "TERMINATED": {},
 }
 
 
@@ -61,7 +61,8 @@ class Sessionizer:
             return
         if call_id not in self.sessions:
             self.sessions[call_id] = self._create_session(call_id, msg)
-        # self.sessions[call_id].append(msg) ## used for pre-state-m/c cases
+        # session = self.sessions[call_id] holds the actual ref of the object
+        # that would be used in sessionizer
 
         session = self.sessions[call_id]
 
@@ -86,7 +87,7 @@ class Sessionizer:
         if session["call_state"] == "CALL":
             current_state = session["call_state"]
             session["call_state"] = TRANSITIONS.get(current_state, {}).get(
-                    sip_msg, current_state
+                sip_msg, current_state
             )
 
         # ---- Error Handling ----
@@ -95,19 +96,21 @@ class Sessionizer:
 
             code = sip_msg.split("::")[1].split()[0]
 
-            session["errors"].append({"code":code, "reason":sip_msg})
+            session["errors"].append({"code": code, "reason": sip_msg})
 
         # ---- Termination ----
         if sip_msg == "BYE":
             session["terminated"] = True
             session["end_time"] = msg["timestamp"]
+        # return is optional (used for streaming/debug)
+        # session holds the current object ref it
+        # got from session = self.sessions[call_id]
 
         return session
 
     # ----------------------------------------
 
-    def _create_session(self, call_id: str, msg: Dict[str, str]) -> Dict[
-        str, Any]:
+    def _create_session(self, call_id: str, msg: Dict[str, str]) -> Dict[str, Any]:
         """
         Create a new session from the normalized message
         :param call_id: str
@@ -115,20 +118,19 @@ class Sessionizer:
         :return: session: Dict[str, Any]
         """
         return {
-            "call_id":call_id,
-            "type_of_call":"CALL" if msg.get(
-                "sip_msg") != "OPTIONS" else "KEEPALIVE",
-            "call_state":"IDLE",
-            "final_status":"UNKNOWN",
-            "has_error":False,
-            "terminated":False,
-            "flow_valid":True,
-            "start_time":msg["timestamp"],
-            "end_time":None,
-            "last_seen":msg["timestamp"],
-            "duration_sec":0,
-            "messages":[],
-            "errors":[],
+            "call_id": call_id,
+            "type_of_call": "CALL" if msg.get("sip_msg") != "OPTIONS" else "KEEPALIVE",
+            "call_state": "IDLE",
+            "final_status": "UNKNOWN",
+            "has_error": False,
+            "terminated": False,
+            "flow_valid": True,
+            "start_time": msg["timestamp"],
+            "end_time": None,
+            "last_seen": msg["timestamp"],
+            "duration_sec": 0,
+            "messages": [],
+            "errors": [],
         }
 
     # ----------------------------------------
