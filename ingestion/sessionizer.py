@@ -197,4 +197,8 @@ class Sessionizer:
         Get all sessions in the instance object
         :return:sessions: Dict[str, str]
         """
+
+        print(self.sessions)
         return self.sessions
+
+    # ---------------------------------------#
