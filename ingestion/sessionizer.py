@@ -10,24 +10,24 @@ Defines the Finite State Machine FSM as a dict[str,dict[str:str]]
 """
 
 TRANSITIONS = {
-    "IDLE": {"INVITE": "INIT"},
-    "INIT": {
-        "100 TRYING": "EARLY",
-        "180 RINGING": "EARLY",
-        "200 OK": "ESTABLISHED",
+    "IDLE":{"INVITE":"INIT"},
+    "INIT":{
+        "100 TRYING":"EARLY",
+        "180 RINGING":"EARLY",
+        "200 OK":"ESTABLISHED",
     },
-    "EARLY": {
-        "180 RINGING": "EARLY",
-        "200 OK": "ESTABLISHED",
+    "EARLY":{
+        "180 RINGING":"EARLY",
+        "200 OK":"ESTABLISHED",
     },
-    "ESTABLISHED": {
-        "ACK": "CONFIRMED",
+    "ESTABLISHED":{
+        "ACK":"CONFIRMED",
     },
-    "CONFIRMED": {
-        "UPDATE": "CONFIRMED",
-        "BYE": "TERMINATED",
+    "CONFIRMED":{
+        "UPDATE":"CONFIRMED",
+        "BYE":"TERMINATED",
     },
-    "TERMINATED": {},
+    "TERMINATED":{},
 }
 
 
@@ -44,14 +44,14 @@ class Sessionizer:
 
     # ----------------------------------------
 
-    def process(self, msg: Dict[str, str]) -> None:
+    def process(self, msg: Dict[str, str]) -> Dict[str:Any]:
         """
         Core of the Sessionizer class
         Processes the normalized messages as sessions with state defined
         using the Finite State Machine
 
         :param msg: Dict[str, str] :: Normalized message passed from Normalizer
-        :return: None
+        :return: Dict[str, Any]
         """
 
         # Segregate call_id
@@ -86,7 +86,7 @@ class Sessionizer:
         if session["call_state"] == "CALL":
             current_state = session["call_state"]
             session["call_state"] = TRANSITIONS.get(current_state, {}).get(
-                sip_msg, current_state
+                    sip_msg, current_state
             )
 
         # ---- Error Handling ----
@@ -95,7 +95,7 @@ class Sessionizer:
 
             code = sip_msg.split("::")[1].split()[0]
 
-            session["errors"].append({"code": code, "reason": sip_msg})
+            session["errors"].append({"code":code, "reason":sip_msg})
 
         # ---- Termination ----
         if sip_msg == "BYE":
@@ -106,27 +106,29 @@ class Sessionizer:
 
     # ----------------------------------------
 
-    def _create_session(self, call_id: str, msg: Dict[str, str]) -> Dict[str, str]:
+    def _create_session(self, call_id: str, msg: Dict[str, str]) -> Dict[
+        str, Any]:
         """
         Create a new session from the normalized message
         :param call_id: str
         :param msg: Dict[str, str] :: Normalized message passed from Normalizer
-        :return: session: Dict[str, str]
+        :return: session: Dict[str, Any]
         """
         return {
-            "call_id": call_id,
-            "type_of_call": "CALL" if msg.get("sip_msg") != "OPTIONS" else "KEEPALIVE",
-            "call_state": "IDLE",
-            "final_status": "UNKNOWN",
-            "has_error": False,
-            "terminated": False,
-            "flow_valid": True,
-            "start_time": msg["timestamp"],
-            "end_time": None,
-            "last_seen": msg["timestamp"],
-            "duration_sec": 0,
-            "messages": [],
-            "errors": [],
+            "call_id":call_id,
+            "type_of_call":"CALL" if msg.get(
+                "sip_msg") != "OPTIONS" else "KEEPALIVE",
+            "call_state":"IDLE",
+            "final_status":"UNKNOWN",
+            "has_error":False,
+            "terminated":False,
+            "flow_valid":True,
+            "start_time":msg["timestamp"],
+            "end_time":None,
+            "last_seen":msg["timestamp"],
+            "duration_sec":0,
+            "messages":[],
+            "errors":[],
         }
 
     # ----------------------------------------
