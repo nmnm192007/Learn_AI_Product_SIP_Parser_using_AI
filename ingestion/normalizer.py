@@ -13,8 +13,8 @@ class Normalizer:
     def normalize(self, parsed_msg: dict) -> dict:
         """
         normalize the message
-        :param parsed_msg:
-        :return:
+        :param parsed_msg: dict
+        :return:dict
         """
         if parsed_msg is None:
             return {}
@@ -36,8 +36,8 @@ class Normalizer:
     def _normalize_time_stamp(self, time_stamp: datetime or str) -> datetime:
         """
         normalize the time stamp
-        :param time_stamp:
-        :return:
+        :param time_stamp: datetime or str
+        :return: datetime
         """
         try:
             if isinstance(time_stamp, datetime):
@@ -51,8 +51,8 @@ class Normalizer:
     def _normalize_direction(self, direction: str) -> str:
         """
         normalize the direction
-        :param direction:
-        :return:
+        :param direction: str
+        :return: str
         """
         if not isinstance(direction, str):
             return "default"
@@ -64,8 +64,8 @@ class Normalizer:
     def _normalize_headers(self, headers: str) -> str:
         """
         normalize the headers
-        :param headers:
-        :return:
+        :param headers: str
+        :return: str
         """
         SIP_METHODS = ("INVITE", "UPDATE", "ACK", "BYE", "OPTIONS")
         SIP_RESPONSES = ("100 TRYING", "180 RINGING", "200 OK")
@@ -77,8 +77,8 @@ class Normalizer:
     def _normalize_call_id(self, call_id: str) -> str:
         """
         normalize the call id
-        :param call_id:
-        :return:
+        :param call_id: str
+        :return: str
         """
         if not call_id or call_id == "":
             return "UNKNOWN::" + call_id
@@ -87,10 +87,10 @@ class Normalizer:
     def _normalize_content_len(self, content_len: str) -> int:
         """
         normalize the content length
-        :param content_len:
-        :return:
+        :param content_len: str
+        :return: str
         """
         if not content_len or content_len == "":
             return "INVALID::" + content_len
         else:
-            return int(content_len.strip())
+            return content_len.strip()

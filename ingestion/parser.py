@@ -1,14 +1,11 @@
 """
 Read the sip call flow log file and parse the message segments
 
-@:param
-@:param
-@:return:
 """
 
 import os
 from pathlib import Path
-from typing import Dict, Any, Generator
+from typing import Any, Dict, Generator
 
 from dotenv import load_dotenv
 
@@ -22,8 +19,8 @@ log_file = BASE_DIR / LOG_FILE
 def read_logs(log_file: Path) -> Generator[str, None, None]:
     """
     read the sip call flow log file and yield the generator
-    :param log_file:
-    :return:
+    :param log_file: Path variable
+    :yield: Generator[str, None, None]
     """
 
     if not log_file.exists():
@@ -35,6 +32,11 @@ def read_logs(log_file: Path) -> Generator[str, None, None]:
 
 
 def group_messages(log_gen: Generator[Any, Any, Any]) -> Generator[Any, Any, Any]:
+    """
+    Group the sip call flow log file and parse the message segments
+    :param log_gen:  Generator[Any, Any, Any]
+    :yield: Generator[Any, Any, Any]
+    """
     message = []
 
     for log_line in log_gen:
@@ -50,8 +52,8 @@ def group_messages(log_gen: Generator[Any, Any, Any]) -> Generator[Any, Any, Any
 def parse_log_segment(log_generator: Generator[str, None, None]) -> Dict[str, Any]:
     """
     parse the sip call flow log file and parse the message segment
-    :param log_generator:
-    :return:
+    :param log_generator: Generator[str, None, None]
+    :yield: Dict[str, Any]
     """
     for msg in group_messages(log_generator):
 
