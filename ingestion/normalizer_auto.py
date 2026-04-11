@@ -17,7 +17,7 @@ class Normalizer:
                 "headers": self._normalize_headers(msg.get("headers", {})),
                 "direction": self._infer_direction(msg),
                 "call_id": self._extract_call_id(msg),
-                "raw": msg.get("raw", "")
+                "raw": msg.get("raw", ""),
             }
 
             normalized.append(clean_msg)
@@ -46,7 +46,7 @@ class Normalizer:
             "OPTIONS": "OPTIONS",
             "200 OK": "200",
             "180 RINGING": "180",
-            "100 TRYING": "100"
+            "100 TRYING": "100",
         }
 
         return mapping.get(method, method)

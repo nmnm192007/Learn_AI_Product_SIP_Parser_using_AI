@@ -55,7 +55,7 @@ class Chunker:
             "chunk_id": f"{call_id}_{index}_{uuid.uuid4().hex[:6]}",
             "call_id": call_id,
             "messages": messages,
-            "summary_hint": self._generate_summary_hint(messages)
+            "summary_hint": self._generate_summary_hint(messages),
         }
 
     def _generate_summary_hint(self, messages: List[Dict]) -> str:
