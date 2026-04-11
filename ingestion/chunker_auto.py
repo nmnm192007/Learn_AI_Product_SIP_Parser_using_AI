@@ -1,5 +1,5 @@
-from typing import List, Dict
 import uuid
+from typing import Dict, List
 
 
 class Chunker:
