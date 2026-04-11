@@ -1,5 +1,0 @@
-# created by virtualenv automatically
-pytest.ini
-.venv
-*.cfg
-.idea
