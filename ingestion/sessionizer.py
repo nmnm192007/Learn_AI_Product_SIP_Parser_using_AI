@@ -200,7 +200,7 @@ class Sessionizer:
         :return:sessions: Dict[str, str]
         """
 
-        print(self.sessions)
+        # print(self.sessions)
         return self.sessions
 
     # ---------------------------------------#
