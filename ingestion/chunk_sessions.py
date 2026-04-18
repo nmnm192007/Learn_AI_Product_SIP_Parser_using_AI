@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Dict, List
 
 
@@ -6,7 +7,14 @@ class ChunkSession:
         self.result = {}
 
     def _create_chunk(
-        self, call_id: str, chunk_id: str, chunk_type: str, messages: List
+        self,
+        call_id: str,
+        chunk_id: str,
+        chunk_type: str,
+        messages: List,
+        start_time: datetime,
+        end_time: datetime,
+        duration_sec: str,
     ) -> Dict[str, str]:
         """
         _create_chunk helper function to create chunks
@@ -14,13 +22,31 @@ class ChunkSession:
         :param chunk_id: str
         :param chunk_type: str
         :param messages: List[str]
+        :param start_time:datetime
+        :param end_time:datetime
+        :param duration_sec:str
         :return: Dict[str, str]
         """
+        has_error = False
+        error_code = None
+        error_text = None
+
+        for m in messages:
+            if m and "OTHER::" in m:
+                has_error = True
+                error_code = m.split()[0].split("::")[1]
+                error_text = " ".join(m.split()[1::])
 
         return {
             "chunk_id": f"{call_id}_{chunk_id}",
             "type": f"{chunk_type}",
             "messages": messages.copy(),
+            "has_error": has_error,
+            "error_code": error_code,
+            "error_text": error_text,
+            "session_start_time": start_time,
+            "session_end_time": end_time,
+            "session_duration_sec": duration_sec,
         }
 
     def _get_phase(self, msg: str) -> str:
@@ -59,6 +85,9 @@ class ChunkSession:
             current_phase = None
             chunk_id = 0
             messages = session["messages"]
+            start_time = session["start_time"]
+            end_time = session["end_time"]
+            duration_sec = session["duration_sec"]
 
             for msg in messages:
                 phase = self._get_phase(msg)
@@ -69,13 +98,29 @@ class ChunkSession:
                         chunk_id = chunk_id + 1
                         chunks.append(
                             self._create_chunk(
-                                call_id, chunk_id, current_phase, current_chunk
+                                call_id,
+                                chunk_id,
+                                current_phase,
+                                current_chunk,
+                                start_time,
+                                end_time,
+                                duration_sec,
                             )
                         )
                         current_chunk = []
 
                     chunk_id = chunk_id + 1
-                    chunks.append(self._create_chunk(call_id, chunk_id, "ERROR", [msg]))
+                    chunks.append(
+                        self._create_chunk(
+                            call_id,
+                            chunk_id,
+                            "ERROR",
+                            [msg],
+                            start_time,
+                            end_time,
+                            duration_sec,
+                        )
+                    )
                     continue
 
                 # check KeepAlive
@@ -92,7 +137,13 @@ class ChunkSession:
                         chunk_id = chunk_id + 1
                         chunks.append(
                             self._create_chunk(
-                                call_id, chunk_id, current_phase, current_chunk
+                                call_id,
+                                chunk_id,
+                                current_phase,
+                                current_chunk,
+                                start_time,
+                                end_time,
+                                duration_sec,
                             )
                         )
                     current_phase = phase
@@ -105,7 +156,15 @@ class ChunkSession:
             if current_chunk:
                 chunk_id = chunk_id + 1
                 chunks.append(
-                    self._create_chunk(call_id, chunk_id, current_phase, current_chunk)
+                    self._create_chunk(
+                        call_id,
+                        chunk_id,
+                        current_phase,
+                        current_chunk,
+                        start_time,
+                        end_time,
+                        duration_sec,
+                    )
                 )
             self.result[call_id] = chunks
 
