@@ -26,6 +26,15 @@ class ChunkSession:
         :param end_time:datetime
         :param duration_sec:str
         :return: Dict[str, str]
+                :"chunk_id": f"{call_id}_{chunk_id}",
+                :"type": f"{chunk_type}",
+                :"messages": messages.copy(),
+                :"has_error": has_error,
+                :"error_code": error_code,
+                :"error_text": error_text,
+                :"session_start_time": start_time,
+                :"session_end_time": end_time,
+                :"session_duration_sec": duration_sec,
         """
         has_error = False
         error_code = None
@@ -94,6 +103,8 @@ class ChunkSession:
 
                 # ERROR Handling (ISOLATED on purpose)
                 if phase == "ERROR":
+
+                    # if already in ERROR phase, append to current chunk
                     if current_chunk:
                         chunk_id = chunk_id + 1
                         chunks.append(
@@ -109,6 +120,7 @@ class ChunkSession:
                         )
                         current_chunk = []
 
+                    # if new chunk
                     chunk_id = chunk_id + 1
                     chunks.append(
                         self._create_chunk(
