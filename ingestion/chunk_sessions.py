@@ -22,9 +22,12 @@ class ChunkSession:
         :param chunk_id: str
         :param chunk_type: str
         :param messages: List[str]
-        :param start_time:datetime
-        :param end_time:datetime
-        :param duration_sec:str
+        :param has_error: Boolean
+        :param error_code: str
+        :param error_text: str
+        :param session_start_time:datetime
+        :param session_end_time:datetime
+        :param session_duration_sec:str
         :return: Dict[str, str]
                 :"chunk_id": f"{call_id}_{chunk_id}",
                 :"type": f"{chunk_type}",
