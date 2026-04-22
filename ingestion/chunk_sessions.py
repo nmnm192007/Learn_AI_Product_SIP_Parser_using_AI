@@ -83,11 +83,13 @@ class ChunkSession:
         else:
             return "UNKNOWN"
 
-    def chunk_sessions_func(self, sessions: Dict[str, str]) -> Dict[str, str]:
+    def chunk_sessions_func(
+        self, sessions: Dict[str, str]
+    ) -> Dict[str, List[Dict[str, str]]]:
         """
         chunk_sessions_func implements CHUNKING
         :param sessions: Dict[str, str]
-        :return: result: Dict[str, str]
+        :return: result: Dict[str,List[Dict[str, str]]]
         """
         self.result = {}
 

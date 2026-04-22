@@ -1,11 +1,18 @@
 """
 Pipeline :: orchestrator
+ Orchestrates the flow of data through the system.
+ Takes a log file as input.
+ Outputs embedded vectors.
+ Uses components from the ingestion module.
+ Uses components from the retrieval module.
 """
 
 from ingestion.chunk_sessions import ChunkSession
+from ingestion.embedding_prep import EmbeddingPrepare
 from ingestion.normalizer import Normalizer
 from ingestion.parser import parse_log_segment, read_logs
 from ingestion.sessionizer import Sessionizer
+from retrieval.embedder import Embedder
 
 
 def run_pipeline(log_file):
@@ -17,6 +24,8 @@ def run_pipeline(log_file):
     normalizer = Normalizer()
     sessionizer = Sessionizer()
     chunker = ChunkSession()
+    embedding_prepper = EmbeddingPrepare()
+    embed_to_vector = Embedder()
 
     # Step 3: Flow
     for msg in parsed_gen:
@@ -24,10 +33,14 @@ def run_pipeline(log_file):
         sessionizer.process(normalized_msg)
 
     # Step 4: Get result
-    result = sessionizer.get_sessions()
+    session_result = sessionizer.get_sessions()
 
     # Step 5: Create Chunks
-    result = chunker.chunk_sessions_func(result)
+    chunk_result = chunker.chunk_sessions_func(session_result)
 
-    # print(result)
+    # Step 6: Prepare Embeddings
+    embed_prep_result = embedding_prepper.embed_chunks(chunk_result)
+
+    # Step 7: Embed to Vector DB
+    result = embed_to_vector.embed_text(embed_prep_result)
     return result

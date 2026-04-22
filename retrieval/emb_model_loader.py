@@ -15,4 +15,5 @@ class ModelLoader:
     def get_model(cls):
         if cls._model is None:
             cls._model = SentenceTransformer("all-MiniLM-L6-v2")
+            print("Model ID:", id(cls._model))
         return cls._model
