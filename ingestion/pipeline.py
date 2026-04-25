@@ -13,9 +13,10 @@ from ingestion.normalizer import Normalizer
 from ingestion.parser import parse_log_segment, read_logs
 from ingestion.sessionizer import Sessionizer
 from retrieval.embedder import Embedder
-
+from retrieval.qdrant_client import QdrantVectorDB
 
 def run_pipeline(log_file):
+    print(":::Pipeline Started:::")
     # Step 1: Generators
     log_gen = read_logs(log_file)
     parsed_gen = parse_log_segment(log_gen)
@@ -26,6 +27,9 @@ def run_pipeline(log_file):
     chunker = ChunkSession()
     embedding_prepper = EmbeddingPrepare()
     embed_to_vector = Embedder()
+    q_vector_db = QdrantVectorDB()
+
+    print(":::All Components Loaded:::")
 
     # Step 3: Flow
     for msg in parsed_gen:
@@ -42,5 +46,8 @@ def run_pipeline(log_file):
     embed_prep_result = embedding_prepper.embed_chunks(chunk_result)
 
     # Step 7: Embed to Vector DB
-    result = embed_to_vector.embed_text(embed_prep_result)
+    emb_chunks = embed_to_vector.embed_text(embed_prep_result)
+
+    # Step 8: Store in Vector DB
+    result = q_vector_db.store_embeddings(emb_chunks)
     return result
