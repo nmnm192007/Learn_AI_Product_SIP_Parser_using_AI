@@ -15,6 +15,7 @@ from ingestion.sessionizer import Sessionizer
 from retrieval.embedder import Embedder
 from retrieval.qdrant_client import QdrantVectorDB
 
+
 def run_pipeline(log_file):
     print(":::Pipeline Started:::")
     # Step 1: Generators
