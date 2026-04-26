@@ -21,6 +21,9 @@ class EmbeddingPrepare:
                         "metadata": {
                             "call_id": call_id,
                             "type": chunk["type"],
+                            "call_status": (
+                                "SUCCESS" if not chunk["error_code"] else "FAILURE"
+                            ),
                             "error_code": chunk["error_code"],
                             "session_start_time": chunk["session_start_time"],
                             "session_duration_sec": chunk["session_duration_sec"],
@@ -39,10 +42,12 @@ class EmbeddingPrepare:
         )
         error_text = chunk.get("error_text") or "No Error Text"
         error_code = chunk.get("error_code") or "No Error Code"
+        call_status = "SUCCESS" if error_code in "No Error Code" else "FAILURE"
 
         return (
             f"Type: {chunk['type']} | "
             f"Messages: {messages} | "
+            f"Call Status: {call_status} | "
             f"Error: {error_text} | "
             f"Code: {error_code} | "
             f"Duration: {chunk['session_duration_sec']}"

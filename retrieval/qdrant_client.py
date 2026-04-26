@@ -7,6 +7,8 @@ class QdrantVectorDB:
 
     def __init__(self):
         self.client = QdrantClient(":memory:")
+
+    def store_embeddings(self, emb_chunks):
         collection_existing = self.client.get_collections().collections
         existing_col = [col.name for col in collection_existing]
         if "calls" not in existing_col:
@@ -15,11 +17,10 @@ class QdrantVectorDB:
                 vectors_config=VectorParams(size=384, distance=Distance.COSINE),
             )
 
-    def store_embeddings(self, emb_chunks):
         vector_points = []
 
         for idx, item in enumerate(emb_chunks):
-            #     Use PointStruct to store the data in Qdrant DB
+            #     Use PointStruct to store the data in qdrant DB
             point = PointStruct(
                 id=idx,
                 vector=item["embedding"],
