@@ -12,6 +12,8 @@ from ingestion.embedding_prep import EmbeddingPrepare
 from ingestion.normalizer import Normalizer
 from ingestion.parser import parse_log_segment, read_logs
 from ingestion.sessionizer import Sessionizer
+from llm.llm_client import LLMClient
+from llm.prompt_builder import PromptBuilder
 from retrieval.embedder import Embedder
 from retrieval.qdrant_client import QdrantVectorDB
 from retrieval.retriever import Retriever
@@ -19,6 +21,7 @@ from retrieval.retriever import Retriever
 
 def run_pipeline(log_file):
     print(":::Pipeline Started:::")
+    query_text = "call success"
     # Step 1: Generators
     log_gen = read_logs(log_file)
     parsed_gen = parse_log_segment(log_gen)
@@ -31,6 +34,8 @@ def run_pipeline(log_file):
     embed_to_vector = Embedder()
     q_vector_db = QdrantVectorDB()
     retriever_obj = Retriever(q_vector_db)
+    prompt_obj = PromptBuilder()
+    llm_obj = LLMClient()
 
     print(":::All Components Loaded:::")
 
@@ -55,5 +60,14 @@ def run_pipeline(log_file):
     emb_obj = q_vector_db.store_embeddings(emb_chunks)
 
     # Step 9: Retrieve from Vector DB
-    result = retriever_obj.start_search("call success")
-    return result
+    retrieved_chunks = retriever_obj.start_search(query_text)
+
+    if not retrieved_chunks:
+        return "No Relevant data found"
+
+    # Step 10: Build Prompt
+    prompt = prompt_obj.build_prompt(query_text, retrieved_chunks)
+
+    # Step 11: LLM Generate
+    answer_result = llm_obj.generate_response(prompt)
+    return answer_result
