@@ -72,12 +72,13 @@ class Retriever:
         )
         results = []
         for r in search_result.points:
-            results.append(
-                {
-                    "text": r.payload["chunk_text"],
-                    "score": r.score,
-                    "metadata": r.payload["metadata"],
-                }
-            )
+            if r.score > 0.4:
+                results.append(
+                    {
+                        "text": r.payload["chunk_text"],
+                        "score": r.score,
+                        "metadata": r.payload["metadata"],
+                    }
+                )
 
         return results

@@ -14,7 +14,9 @@ log_file = BASE_DIR / LOG_FILE
 
 def main():
 
-    chunks = run_pipeline(log_file)
+    prompt_result = run_pipeline(log_file)
+    print("\n Answer :: \n")
+    print(prompt_result)
 
 
 if __name__ == "__main__":

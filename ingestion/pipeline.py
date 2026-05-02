@@ -21,7 +21,9 @@ from retrieval.retriever import Retriever
 
 def run_pipeline(log_file):
     print(":::Pipeline Started:::")
-    query_text = "call success"
+    query_text = (
+        "explain which all were the successful calls, also explain when call failed"
+    )
     # Step 1: Generators
     log_gen = read_logs(log_file)
     parsed_gen = parse_log_segment(log_gen)
