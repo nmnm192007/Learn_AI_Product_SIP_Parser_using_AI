@@ -1,4 +1,5 @@
 from app.models.schemas import QueryRequest, QueryResponse
+from app.services.rag_service import process_query
 from fastapi import APIRouter
 
 router = APIRouter()
@@ -19,10 +20,6 @@ def health_check():
 
 
 @router.post("/query", response_model=QueryResponse)
-def query_check(request: QueryRequest):
-    response = QueryResponse(
-        answer="This is a dummy answer",
-        sources=["chunk_ID", "source_filename", "citations"],
-        latency_ms=100,
-    )
-    return response
+def query_fn(request: QueryRequest):
+    result = process_query(request.query)
+    return result
