@@ -13,8 +13,11 @@ log_file = BASE_DIR / LOG_FILE
 
 
 def main():
+    query_text = (
+        "explain which all were the successful calls, also explain when call failed"
+    )
 
-    prompt_result = run_pipeline(log_file)
+    prompt_result = run_pipeline(log_file, query_text)
     print("\n Answer :: \n")
     print(prompt_result)
 

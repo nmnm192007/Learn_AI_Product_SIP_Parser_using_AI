@@ -19,11 +19,9 @@ from retrieval.qdrant_client import QdrantVectorDB
 from retrieval.retriever import Retriever
 
 
-def run_pipeline(log_file):
+def run_pipeline(log_file, query_text):
     print(":::Pipeline Started:::")
-    query_text = (
-        "explain which all were the successful calls, also explain when call failed"
-    )
+
     # Step 1: Generators
     log_gen = read_logs(log_file)
     parsed_gen = parse_log_segment(log_gen)
