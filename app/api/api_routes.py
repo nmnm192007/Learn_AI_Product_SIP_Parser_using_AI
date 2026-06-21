@@ -21,5 +21,5 @@ def health_check():
 
 @router.post("/query", response_model=QueryResponse)
 def query_fn(request: QueryRequest):
-    result = process_query(request.query)
+    result = process_query(request.query, request.file_path)
     return result

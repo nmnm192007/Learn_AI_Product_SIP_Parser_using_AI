@@ -8,12 +8,12 @@ router = APIRouter()
 
 @router.post("/upload")
 async def upload_file(file_in: UploadFile = File(...)):
-    saved_path = await save_upload_file(file_in)
+
     allowed_extensions = [".txt", ".pdf", ".log"]
-    # check file type
     if not file_in.filename.endswith(tuple(allowed_extensions)):
         raise HTTPException(status_code=400, detail="Unsupported File Type")
 
+    saved_path = await save_upload_file(file_in)
     return {
         "message": "File Upload Successful",
         "filename": file_in.filename,
