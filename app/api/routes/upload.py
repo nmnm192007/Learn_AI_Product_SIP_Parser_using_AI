@@ -18,4 +18,5 @@ async def upload_file(file_in: UploadFile = File(...)):
         "message": "File Upload Successful",
         "filename": file_in.filename,
         "content_type": file_in.content_type,
+        "path": str(saved_path),
     }
