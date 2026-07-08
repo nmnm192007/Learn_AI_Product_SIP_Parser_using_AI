@@ -54,8 +54,9 @@ class Retriever:
         print("Query Vector Length :: " + str(len(query_vector)))
         return query_vector
 
-    def start_search(self, query: str, top_k: int = 5, min_score=0.4):
-        """
+    # def start_search(self, query: str, top_k: int = 5, min_score=0.4):
+    def start_search(self, query: str, top_k: int = 3, min_score=0.6):
+        """7
         Start the search in the vector database
         :param query: str
         :param top_k: int

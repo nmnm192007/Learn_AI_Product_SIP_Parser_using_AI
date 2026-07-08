@@ -8,24 +8,29 @@ class PromptBuilder:
         :return: str
         """
 
-        context = "\n".join([chunk["text"] for chunk in retrieved_chunks[:2]])
-
+        # context = "\n".join([chunk["text"] for chunk in retrieved_chunks[:2]])
+        context = "\n\n".join(
+            [f"[LOG {i+1}]\n{c['text']}" for i, c in enumerate(retrieved_chunks)]
+        )
         prompt = f"""
         You are a telecom log analysis system.
 
         STRICT RULES:
         - Only use exact information from the context
+        - Answer ONLY using context.
         - DO NOT infer or assume anything
+        - Do not reproduce logs.
+        - Do not repeat instructions.
         - DO NOT introduce new terms not present in context
         - If something is not explicitly present, say "Not found"
 
-        Context:
+        CONTEXT:
         {context}
 
-        Question:
+        QUESTION:
         {query}
 
-        Output format:
+        Return ONLY:
         - Summary
         - Call Status
         - Errors (if any)
