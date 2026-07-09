@@ -1,3 +1,5 @@
+import logging
+
 from sentence_transformers import SentenceTransformer
 
 
@@ -16,4 +18,6 @@ class ModelLoader:
         if cls._model is None:
             cls._model = SentenceTransformer("all-MiniLM-L6-v2")
             print("Model ID:", id(cls._model))
+            logging.info("Model loaded successfully")
+            logging.info("Model ID: %s", id(cls._model))
         return cls._model

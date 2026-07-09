@@ -1,3 +1,5 @@
+import logging
+
 from qdrant_client.models import Distance, PointStruct, VectorParams
 
 from qdrant_client import QdrantClient
@@ -38,11 +40,13 @@ class QdrantVectorDB:
         self.client.upsert(collection_name="calls", points=vector_points)
 
         print("After Insert Count:", self.client.count("calls"))
+        logging.info("Vectors Embedding Insert Done :: ")
         record = self.client.scroll(collection_name="calls", limit=1, with_vectors=True)
 
         vec = record[0][0].vector
 
         print(len(vec))
+        logging.info("Length of Vector :: %s", str(len(vec)))
         # print(
         #     "Sample Data:",
         #     self.client.scroll("calls", limit=1, with_vectors=True, with_payload=True),

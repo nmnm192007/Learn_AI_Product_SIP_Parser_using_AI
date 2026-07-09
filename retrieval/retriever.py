@@ -1,3 +1,5 @@
+import logging
+
 from qdrant_client.models import FieldCondition, Filter, MatchValue
 from retrieval.emb_model_loader import ModelLoader
 from retrieval.qdrant_client import QdrantVectorDB
@@ -65,6 +67,7 @@ class Retriever:
         """
 
         if not self.check_collections("calls"):
+            logging.error("Collections object not found")
             raise ValueError("Collections object not found")
 
         search_result = self._client.client.query_points(

@@ -1,3 +1,4 @@
+import logging
 from typing import Dict, List
 
 from retrieval.emb_model_loader import ModelLoader
@@ -28,6 +29,7 @@ class Embedder:
         """
 
         if not prepared_chunks:
+            logging.error("Empty prepared_chunks list received for embedding")
             return []
 
         print(
@@ -40,6 +42,8 @@ class Embedder:
         text_to_embed = [item["chunk_text"] for item in prepared_chunks]
 
         print(":::Embedding Text:::")
+        logging.info("text_to_embed :: %s", text_to_embed)
+        logging.info(":: Embedding Text ::")
         print(
             "\n "
             + "\n Length of text_to_embed :: "
@@ -51,6 +55,8 @@ class Embedder:
         embeddings = self.model.encode(text_to_embed)
         print("Embeddings :: " + str(embeddings.shape))
         print(":::Embedding Complete:::")
+        logging.info("Embeddings :: %s", str(embeddings.shape))
+        logging.info("Embedding Complete")
 
         # map back
         for i, prep_chunk_item in enumerate(prepared_chunks):
@@ -63,8 +69,12 @@ class Embedder:
             prep_chunk_item["embedding"] = embeddings[i].tolist()
 
             print("Embedding index Added to Chunk :: " + str(i))
+            logging.info("Embedding index Added to Chunk ::  %s", str(i))
             print("Chunk ID :: " + str(prep_chunk_item["chunk_id"]))
             print("Length of Embedding :: " + str(len(prep_chunk_item["embedding"])))
+            logging.info(
+                "Length of Embedding ::  %s", str(len(prep_chunk_item["embedding"]))
+            )
 
         print(len(prepared_chunks[0]["embedding"]))
 
