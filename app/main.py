@@ -6,6 +6,7 @@ app = FastAPI(
     title="AI Based Product Answering Machine",
     version="2.0",
     description="An AI-powered product answering machine for processing queries and files",
+    docs_url="/docs",
 )
 
 app.include_router(routes_router)

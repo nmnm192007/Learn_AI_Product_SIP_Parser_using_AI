@@ -1,6 +1,8 @@
 import os
 from uuid import uuid4
 
+from fastapi import HTTPException
+
 UPLOAD_DIR = "app/uploads"
 
 
@@ -10,6 +12,10 @@ async def save_upload_file(upload_file):
     unique_filename = f"{uuid4()}_{upload_file.filename}"
     print("File :: " + unique_filename)
     file_path = os.path.join(UPLOAD_DIR, unique_filename)
+    if not file_path:
+        raise HTTPException(
+            status_code=404, detail=f"file path not found :: {file_path}"
+        )
 
     contents = await upload_file.read()
     print("Length:: " + str(len(contents)))

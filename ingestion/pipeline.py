@@ -7,6 +7,8 @@ Pipeline :: orchestrator
  Uses components from the retrieval module.
 """
 
+import logging
+
 from ingestion.chunk_sessions import ChunkSession
 from ingestion.embedding_prep import EmbeddingPrepare
 from ingestion.normalizer import Normalizer
@@ -18,9 +20,13 @@ from retrieval.embedder import Embedder
 from retrieval.qdrant_client import QdrantVectorDB
 from retrieval.retriever import Retriever
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
+
 
 def run_pipeline(log_file, query_text):
     print(":::Pipeline Started:::")
+    logger.info("Pipeline Started")
 
     # Step 1: Generators
     log_gen = read_logs(log_file)
@@ -38,6 +44,7 @@ def run_pipeline(log_file, query_text):
     llm_obj = LLMClient()
 
     print(":::All Components Loaded:::")
+    logger.info("All Components Loaded")
 
     # Step 3: Flow
     for msg in parsed_gen:
@@ -63,6 +70,7 @@ def run_pipeline(log_file, query_text):
     retrieved_chunks = retriever_obj.start_search(query_text)
 
     if not retrieved_chunks:
+        logging.error("No Relevant data found")
         return "No Relevant data found"
 
     # Step 10: Build Prompt

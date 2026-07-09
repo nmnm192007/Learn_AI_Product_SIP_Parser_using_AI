@@ -3,6 +3,7 @@ Read the sip call flow log file and parse the message segments
 
 """
 
+import logging
 import os
 from pathlib import Path
 from typing import Any, Dict, Generator
@@ -24,6 +25,7 @@ def read_logs(log_file: Path) -> Generator[str, None, None]:
     """
 
     if not log_file.exists():
+        logging.error("%s does not exist", log_file)
         raise FileNotFoundError(f"{log_file} does not exist")
 
     with open(log_file, "r") as f:

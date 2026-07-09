@@ -1,3 +1,5 @@
+import logging
+
 import requests
 
 
@@ -24,19 +26,25 @@ class LLMClient:
                 result = response.json()
                 print("LLM raw response :: \n")
                 print(result)
+                logging.info("LLM raw response:: %s", result)
                 tmp_resp = result.get("response", "No response field got from LLM")
                 if not tmp_resp.strip():
                     print("EMPTY response from LLM")
+                    logging.error("EMPTY response from LLM")
                     return "EMPTY response from LLM"
                 return tmp_resp
 
             else:
                 print(f"Error: {response.status_code}")
+                logging.error("Error from LLM :: %s", response.status_code)
                 print(response.text)
+                logging.error("Error from LLM :: %s", response.text)
                 return None
         except requests.exceptions.Timeout:
             print("Request Timed Out -- Check Model Timeout or Slow Response")
+            logging.error("Timeout Error from LLM")
             return None
         except Exception as e:
             print(f"Exception ::  {e}")
+            logging.error("Exception from LLM :: %s", e)
             return None

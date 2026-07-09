@@ -1,8 +1,6 @@
 from app.services.file_service import save_upload_file
 from fastapi import APIRouter, File, HTTPException, UploadFile
 
-UPLOAD_DIR = "data/uploads"
-
 router = APIRouter()
 
 

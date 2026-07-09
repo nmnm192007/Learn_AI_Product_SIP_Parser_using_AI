@@ -14,3 +14,61 @@ __pycache__/
 
 # Images / docs artifacts
 doc_img/*.tar
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+
+# Logs
+*.log
+
+# Uploads
+app/uploads/
+
+# Generated data
+data/uploads/
+
+# Model cache
+.cache/
+.huggingface/
+
+# Pytest
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Build
+build/
+dist/
+
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+
+# Kubernetes temp
+*.retry
+
+# Ollama
+ollama.log
