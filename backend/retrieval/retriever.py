@@ -57,7 +57,7 @@ class Retriever:
         return query_vector
 
     # def start_search(self, query: str, top_k: int = 5, min_score=0.4):
-    def start_search(self, query: str, top_k: int = 3, min_score=0.6):
+    def start_search(self, query: str, top_k: int = 10, min_score=0.6):
         """7
         Start the search in the vector database
         :param query: str
@@ -76,14 +76,21 @@ class Retriever:
             limit=top_k,
         )
         results = []
+        print("\n============= SEARCH RESULTS =============")
         for r in search_result.points:
-            if r.score > min_score:
-                results.append(
-                    {
-                        "text": r.payload["chunk_text"],
-                        "score": r.score,
-                        "metadata": r.payload["metadata"],
-                    }
-                )
+            print("--------------------------------")
+            print(f"Score : {r.score}")
+            print(f"Chunk : {r.payload['chunk_text'][:120]}")
+            print(f"Metadata : {r.payload['metadata']}")
+
+            results.append(
+                {
+                    "text": r.payload["chunk_text"],
+                    "score": r.score,
+                    "metadata": r.payload["metadata"],
+                }
+            )
+
+        print("==========================================")
 
         return results

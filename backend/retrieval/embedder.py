@@ -39,7 +39,8 @@ class Embedder:
             + "\n"
         )
 
-        text_to_embed = [item["chunk_text"] for item in prepared_chunks]
+        # text_to_embed = [item["chunk_text"] for item in prepared_chunks]
+        text_to_embed = [item["chunk_text_enriched"] for item in prepared_chunks]
 
         print(":::Embedding Text:::")
         logging.info("text_to_embed :: %s", text_to_embed)
