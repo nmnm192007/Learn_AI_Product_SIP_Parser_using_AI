@@ -68,10 +68,18 @@ def run_pipeline(log_file, query_text):
 
     # Step 9: Retrieve from Vector DB
     retrieved_chunks = retriever_obj.start_search(query_text)
-
     if not retrieved_chunks:
         logging.error("No Relevant data found")
         return "No Relevant data found"
+
+    logging.info("Retrieved %d relevant chunks", len(retrieved_chunks))
+    # for r in retrieved_chunks:
+    #     logging.info(
+    #         "Retrieved Chunk | score=%.4f | call_id=%s | type=%s",
+    #         r.score,
+    #         r.payload.get("call_id"),
+    #         r.payload.get("message_type"),
+    #     )
 
     # Step 10: Build Prompt
     prompt = prompt_obj.build_prompt(query_text, retrieved_chunks)

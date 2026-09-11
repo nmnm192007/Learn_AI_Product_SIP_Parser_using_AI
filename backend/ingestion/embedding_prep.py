@@ -22,6 +22,7 @@ class EmbeddingPrepare:
                         "chunk_text": chunk_to_text,
                         "chunk_text_enriched": chunk_to_text_enriched,
                         "metadata": {
+                            "chunk_id": chunk["chunk_id"],
                             "call_id": call_id,
                             "type": chunk["type"],
                             "call_status": call_status,

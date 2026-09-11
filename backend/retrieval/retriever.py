@@ -3,6 +3,7 @@ import logging
 from qdrant_client.models import FieldCondition, Filter, MatchValue
 from retrieval.emb_model_loader import ModelLoader
 from retrieval.qdrant_client import QdrantVectorDB
+from retrieval.query_expander import QueryExpander
 
 
 class Retriever:
@@ -30,6 +31,7 @@ class Retriever:
         """
         self._model = ModelLoader.get_model()
         self._client = db
+        self._query_expand = QueryExpander()
 
     def check_collections(self, c_obj):
         """
@@ -47,7 +49,8 @@ class Retriever:
 
     def get_query_vector(self, query: str):
         """
-        Get the query string and encode in the model for convering to query vector
+        Get the query string and encode in the model for converting
+        to query vector
         :param query:   str
         :return:  query_vector - encoded using model
         """
@@ -57,8 +60,8 @@ class Retriever:
         return query_vector
 
     # def start_search(self, query: str, top_k: int = 5, min_score=0.4):
-    def start_search(self, query: str, top_k: int = 10, min_score=0.6):
-        """7
+    def start_search(self, query: str, top_k: int = 8, min_score=0.55):
+        """
         Start the search in the vector database
         :param query: str
         :param top_k: int
@@ -70,11 +73,22 @@ class Retriever:
             logging.error("Collections object not found")
             raise ValueError("Collections object not found")
 
+        expanded = self._query_expand.expand(query)
+        original_query = expanded["original_query"]
+        expanded_query = expanded["expanded_query"]
+
+        print(f"\nOriginal Query :: {original_query}")
+        print(f"Expanded Query :: {expanded_query}")
+
+        logging.info("Original_Query :: %s", original_query)
+        logging.info("Expanded_Query :: %s", expanded_query)
+
         search_result = self._client.client.query_points(
             collection_name="calls",
-            query=self.get_query_vector(query=query).tolist(),
+            query=self.get_query_vector(query=expanded_query).tolist(),
             limit=top_k,
         )
+
         results = []
         print("\n============= SEARCH RESULTS =============")
         for r in search_result.points:
@@ -94,3 +108,30 @@ class Retriever:
         print("==========================================")
 
         return results
+
+    #     # results_enriched = self._format_retrieved_context(results)
+    #     # return results_enriched
+    #
+    # def _format_retrieved_context(results: Dict[str:str]) -> str:
+    #     """
+    #     Helper function to format the retrieved context
+    #     :param results: Dict[str,str]
+    #     :return:str
+    #     """
+    #     context_parts = []
+    #
+    #     for result in results:
+    #         payload = result.payload
+    #
+    #         context_parts.append(f"""
+    #                 Chunk ID: {payload.get("chunk_id")}
+    #                 Call ID: {payload.get("call_id")}
+    #                 Type: {payload.get("type")}
+    #                 Call Status: {payload.get("call_status")}
+    #                 Messages: {payload.get("messages")}
+    #                 Error: {payload.get("error_text")}
+    #                 Error Code: {payload.get("error_code")}
+    #                 Duration: {payload.get("session_duration_sec")}
+    #         """)
+    #
+    #     return "\n---\n".join(context_parts)

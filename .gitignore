@@ -1,7 +1,7 @@
 # Python
-.venv/
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
 
 # IDE
 .idea/
@@ -23,6 +23,8 @@ __pycache__/
 # Virtual Environment
 .venv/
 venv/
+env/
+
 
 # IDE
 .idea/
@@ -72,3 +74,32 @@ terraform.tfstate.backup
 
 # Ollama
 ollama.log
+
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Application uploads
+uploads/
+backend/app/uploads/
+frontend/uploads/
+
+# Logs
+*.log
+logs/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# Model/cache files
+.cache/
+.huggingface/
