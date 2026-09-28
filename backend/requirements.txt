@@ -1,0 +1,17 @@
+# FastAPI Backend
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+
+# Environment Configuration
+python-dotenv
+
+# AI / Embeddings
+sentence-transformers
+
+# Vector Database
+qdrant-client
+
+# HTTP Client
+requests

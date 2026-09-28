@@ -1,0 +1,33 @@
+# DEVELOPMENT LOCAL ENV
+
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+sentence-transformers
+qdrant-client
+requests
+streamlit
+
+# TESTS CODE
+pytest
+httpx
+
+#
+#| Package                 | Evidence from your code                      | Recommendation                        |
+#| ----------------------- | -------------------------------------------- | ------------------------------------- |
+#| `fastapi`               | API routes, application, file upload         | Keep                                  |
+#| `uvicorn[standard]`     | FastAPI server                               | Keep                                  |
+#| `python-multipart`      | File upload endpoint                         | Keep                                  |
+#| `pydantic`              | Request and response schemas                 | Keep                                  |
+#| `sentence-transformers` | `retrieval/emb_model_loader.py`              | Keep                                  |
+#| `qdrant-client`         | `retrieval/qdrant_client.py`                 | Keep                                  |
+#| `requests`              | LLM client and frontend API calls            | Keep                                  |
+#| `python-dotenv`         | `ingestion/parser.py`, `run.py`              | **Add — missing**                     |
+#| `streamlit`             | `frontend/app.py`                            | Keep for the frontend                 |
+#| `torch`                 | No direct import found                       | Review; likely installed transitively |
+#| `transformers`          | No direct import found                       | Review; likely installed transitively |
+#| `pypdf`                 | No direct import found                       | Remove for now                        |
+#| `pytest`                | No direct import found; tests use `unittest` | Development dependency only           |
+#| `httpx`                 | No direct import found                       | Remove unless needed for API testing  |
+
