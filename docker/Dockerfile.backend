@@ -3,29 +3,42 @@
 # ================
 
 FROM python:3.11-slim AS builder
+
 WORKDIR /build
+
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-COPY backend/requirements.txt .
 
+COPY backend/requirements.txt .
+COPY docker/constraints.txt .
+
+# Install CPU-only PyTorch.
+# Prevents the CUDA/Triton dependency tree from entering the image.
 # RUN pip install --prefix=/install --no-cache-dir -r requirements.txt
 RUN pip install --prefix=/install --no-cache-dir \
-    torch --index-url https://download.pytorch.org/whl/cpu
+    torch==2.8.0+cpu \
+    --index-url https://download.pytorch.org/whl/cpu
 
-RUN pip install --prefix=/install --no-cache-dir -r requirements.txt
+# Install remaining backend dependencies.
+# constraints.txt keeps PyTorch pinned to the CPU build.
+RUN pip install --prefix=/install --no-cache-dir \
+    -r requirements.txt  --constraint constraints.txt
 
 # ==================
 # Runtime Stage
 # ==================
 
 FROM python:3.11-slim
+
 WORKDIR /app
+
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+
 COPY --from=builder /install /usr/local
 COPY backend/ .
+
 EXPOSE 8000
+
 ENTRYPOINT ["uvicorn"]
 CMD ["app.main:app", "--host", "0.0.0.0", "--port", "8000"]
-
-
