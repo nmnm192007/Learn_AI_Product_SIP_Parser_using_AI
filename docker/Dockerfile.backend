@@ -22,7 +22,8 @@ RUN pip install --prefix=/install --no-cache-dir \
 # Install remaining backend dependencies.
 # constraints.txt keeps PyTorch pinned to the CPU build.
 RUN pip install --prefix=/install --no-cache-dir \
-    -r requirements.txt  --constraint constraints.txt
+    -r requirements.txt \
+    --constraint constraints.txt
 
 # ==================
 # Runtime Stage
