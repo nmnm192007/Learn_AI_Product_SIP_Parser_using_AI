@@ -44,7 +44,7 @@ class Sessionizer:
 
     # ----------------------------------------
 
-    def process(self, msg: Dict[str, str]) -> Dict[str:Any]:
+    def process(self, msg: Dict[str, str]) -> Dict[str, Any]:
         """
         Core of the Sessionizer class
         Processes the normalized messages as sessions with state defined
