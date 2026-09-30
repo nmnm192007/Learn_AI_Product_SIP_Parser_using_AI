@@ -1,19 +1,37 @@
+# Git
 .git
 .github
+
+# Python environments
 .venv
 venv
 env
-__pycache__
-*.py[cod]
-.pytest_cache
-.mypy_cache
-.ruff_cache
+
+# Python cache and bytecode
+**/__pycache__
+**/*.py[cod]
+**/.mypy_cache
+**/.pytest_cache
+**/.ruff_cache
+
+# IDE configuration
 .idea
 .vscode
-*.log
-.env
-app/uploads/*
-backend/app/uploads/*
-frontend/.streamlit
-.DS_Store
 
+# Logs
+*.log
+
+# Environment files and secrets
+.env
+.env.*
+
+# Application uploads
+backend/app/uploads/*
+data/uploads/*
+uploads/*
+
+# Frontend cache
+frontend/.streamlit
+
+# OS files
+.DS_Store

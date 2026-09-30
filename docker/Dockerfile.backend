@@ -8,6 +8,10 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 COPY backend/requirements.txt .
 
+# RUN pip install --prefix=/install --no-cache-dir -r requirements.txt
+RUN pip install --prefix=/install --no-cache-dir \
+    torch --index-url https://download.pytorch.org/whl/cpu
+
 RUN pip install --prefix=/install --no-cache-dir -r requirements.txt
 
 # ==================
