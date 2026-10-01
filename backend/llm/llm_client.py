@@ -1,4 +1,5 @@
 import logging
+import os
 
 import requests
 
@@ -6,7 +7,9 @@ import requests
 class LLMClient:
     # def __init__(self, model="llama3"):
     def __init__(self, model="phi3"):
-        self.url = "http://localhost:11434/api/generate"
+        ollama_base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+        self.url = f"{ollama_base_url}/api/generate"
+        # self.url = "http://localhost:11434/api/generate"
         self.model = model
 
     def generate_response(self, prompt: str):
