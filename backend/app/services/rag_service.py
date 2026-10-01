@@ -2,7 +2,7 @@ from pathlib import Path
 
 import time
 from app.models.schemas import QueryRequest, QueryResponse
-from fastapi import HTTPException, HTTPException
+from fastapi import HTTPException
 from ingestion.pipeline import run_pipeline
 
 
