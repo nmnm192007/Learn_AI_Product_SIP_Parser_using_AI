@@ -49,6 +49,7 @@ data/uploads/
 # Model cache
 .cache/
 .huggingface/
+.hf_cache/
 
 # Pytest
 .pytest_cache/
