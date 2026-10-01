@@ -26,6 +26,9 @@ services:
     container_name: sip_parser_ollama
     ports:
       - "11434:11434"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     volumes:
       - ollama_data:/root/.ollama
 
