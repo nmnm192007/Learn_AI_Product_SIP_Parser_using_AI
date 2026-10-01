@@ -1,8 +1,8 @@
-from http.client import HTTPException
 from pathlib import Path
 
 import time
 from app.models.schemas import QueryRequest, QueryResponse
+from fastapi import HTTPException, HTTPException
 from ingestion.pipeline import run_pipeline
 
 
@@ -19,6 +19,8 @@ def process_query(query: str, file_path: str | None = None):
 
     print("Resolved Path :: " + str(path))
     print("Exists :: " + str(path.exists()))
+    if not path.exists():
+        raise HTTPException(status_code=404, detail=f"File does not exist : {path}")
 
     answer = run_pipeline(path, query)
     start = time.perf_counter()
